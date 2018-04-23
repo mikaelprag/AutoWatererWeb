@@ -2,7 +2,7 @@
 lock "~> 3.10.2"
 
 set :application, "auto_waterer_web"
-set :repo_url, "https://github.com/mikaelprag/AutoWaterer.git"
+set :repo_url, "https://github.com/mikaelprag/AutoWatererWeb.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
