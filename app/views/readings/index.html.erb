@@ -1,0 +1,28 @@
+<% readings = Reading.where(created_at: 4.days.ago..Time.zone.now) %>
+
+<%= area_chart readings.group_by_hour(:created_at).average(:temp), colors: ["red"] %>
+
+<%= area_chart readings.group_by_hour(:created_at).average(:light), colors: ["orange"] %>
+
+<%= area_chart readings.group_by_hour(:created_at).average(:humidity), colors: ["blue"] %>
+
+<%= area_chart readings.group_by_hour(:created_at).average(:battery), colors: ["green"] %>
+
+<table id="readings">
+  <tr>
+    <th>Created</th>
+    <th>Temp</th>
+    <th>Humidity</th>
+    <th>Light</th>
+    <th>Battery</th>
+  </tr>
+  <% @readings.limit(100).each do |reading| %>
+    <tr>
+      <td><%= reading.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+      <td><%= reading.temp %> c</td>
+      <td><%= reading.humidity %> %</td>
+      <td><%= reading.light %></td>
+      <td><%= reading.battery %></td>
+    </tr>
+  <% end %>
+</table>
