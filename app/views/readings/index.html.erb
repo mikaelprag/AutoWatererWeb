@@ -1,13 +1,59 @@
-<% readings = Reading.where(created_at: 4.days.ago..Time.zone.now) %>
+<% if @readings.last.created_at < 20.minutes.ago %>
+  <div class="warning">No data recieved in more than 20 minutes!</div>
+<% end %>
 
-<%= area_chart readings.group_by_hour(:created_at).average(:temp), colors: ["red"] %>
+<div class="fast-facts">
+  <div class="temperature">
+    <p><i class="fas fa-thermometer-empty"></i> <%= @readings.last.temp %> ℃</p>
+  </div>
+  <div class="spacer"></div>
+  <div class="humidity">
+    <p><i class="fas fa-tint"></i> <%= @readings.last.humidity %> %</p>
+  </div>
+</div>
 
-<%= area_chart readings.group_by_hour(:created_at).average(:light), colors: ["orange"] %>
+<div class="filter-buttons">
+  <%= form_tag readings_path, method: :get do %>
+    <%= hidden_field_tag :span, 'day' %>
+    <%= submit_tag "Day", class: active_class_for('day') %>
+  <% end %>
 
-<%= area_chart readings.group_by_hour(:created_at).average(:humidity), colors: ["blue"] %>
+  <%= form_tag readings_path, method: :get do %>
+    <%= hidden_field_tag :span, 'week' %>
+    <%= submit_tag "Week", class: active_class_for('week') %>
+  <% end %>
 
-<%= area_chart readings.group_by_hour(:created_at).average(:battery), colors: ["green"] %>
+  <%= form_tag readings_path, method: :get do %>
+    <%= hidden_field_tag :span, 'month' %>
+    <%= submit_tag "Month", class: active_class_for('month') %>
+  <% end %>
 
+  <%= form_tag readings_path, method: :get do %>
+    <%= hidden_field_tag :span, '3months' %>
+    <%= submit_tag "3 Months", class: active_class_for('3months') %>
+  <% end %>
+
+  <%= form_tag readings_path, method: :get do %>
+    <%= hidden_field_tag :span, '6months' %>
+    <%= submit_tag "6 Months", class: active_class_for('6months') %>
+  <% end %>
+
+</div>
+
+<h2>Temp</h2>
+<%= area_chart @grouped.average(:temp), colors: ["red"], max: 50, min: 0, suffix: "°C" %>
+
+<h2>Light</h2>
+<%= area_chart @grouped.average(:light), colors: ["orange"], max: 1000, min: 0 %>
+
+<h2>Humidity</h2>
+<%= area_chart @grouped.average(:humidity), colors: ["blue"], max: 100, min: 0, suffix: "%" %>
+
+<h2>Battery</h2>
+<%= area_chart @grouped.average(:battery), colors: ["green"], max: 600, min: 420 %>
+
+<br/><br/>
+<%= @readings.count %>
 <table id="readings">
   <tr>
     <th>Created</th>
@@ -16,7 +62,7 @@
     <th>Light</th>
     <th>Battery</th>
   </tr>
-  <% @readings.limit(100).each do |reading| %>
+  <% @readings.order(id: :desc).limit(200).each do |reading| %>
     <tr>
       <td><%= reading.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
       <td><%= reading.temp %> c</td>

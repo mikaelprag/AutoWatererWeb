@@ -25,3 +25,45 @@
     background-color: #4CAF50;
     color: white;
 }
+
+.warning {
+  border: 1px solid red;
+  background-color: pink;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 1.2em;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 10px;
+}
+
+.fast-facts {
+  display: flex;
+  margin-bottom: 10px;
+  .spacer {
+    flex-grow: 0.02;
+  }
+  .temperature,
+  .humidity {
+    flex: 1 1;
+    text-align: center;
+    p {
+      padding: 10px 20px;
+      background-color: #0ca8db;
+      color: white;
+      font-size: 2em;
+      margin: 0;
+      white-space: nowrap;
+      border-radius: 5px;
+    }
+  }
+}
+
+body.mobile {
+  .fast-facts .temperature,
+  .fast-facts .humidity {
+    p {
+      padding: 20px;
+      font-size: 4em;
+    }
+  }
+}
