@@ -42,8 +42,7 @@
   .spacer {
     flex-grow: 0.02;
   }
-  .temperature,
-  .humidity {
+  .fact {
     flex: 1 1;
     text-align: center;
     p {
@@ -54,16 +53,17 @@
       margin: 0;
       white-space: nowrap;
       border-radius: 5px;
+      border-top: 2px solid blue;
+      border-bottom: 2px solid blue;
     }
   }
 }
 
 body.mobile {
-  .fast-facts .temperature,
-  .fast-facts .humidity {
+  .fast-facts .fact {
     p {
       padding: 20px;
-      font-size: 4em;
+      font-size: 3.5em;
     }
   }
 }

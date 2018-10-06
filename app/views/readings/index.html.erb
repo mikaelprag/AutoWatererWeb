@@ -2,13 +2,41 @@
   <div class="warning">No data recieved in more than 20 minutes!</div>
 <% end %>
 
+<div class="note-links">
+  <%= link_to 'Note +'.html_safe, new_note_path, remote: true, class: 'button active' %>
+  <%= link_to "Show Notes (#{@notes.count})", '#', id: 'notes-link', class: 'button' %>
+</div>
+
+<div id="note-form">
+</div>
+
+<div class="notes">
+  <% @notes.each do |note| %>
+  <div class="note">
+    <div class="note-container">
+      <div class="content">
+        <span class="happend">
+          <%= note.happend.strftime('%Y-%m-%d') %>
+        </span>
+        <%= note.content %>
+        <% link_to '<i class="fas fa-trash-alt"></i>'.html_safe, note, method: :delete, data: { confirm: "Are you sure?" }, class: 'delete' %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+
 <div class="fast-facts">
-  <div class="temperature">
+  <div class="fact">
     <p><i class="fas fa-thermometer-empty"></i> <%= @readings.last.temp %> ℃</p>
   </div>
   <div class="spacer"></div>
-  <div class="humidity">
+  <div class="fact">
     <p><i class="fas fa-tint"></i> <%= @readings.last.humidity %> %</p>
+  </div>
+  <div class="spacer"></div>
+  <div class="fact">
+    <p><i class="fas fa-battery-three-quarters"></i> <%= @readings.last.battery %></p>
   </div>
 </div>
 
@@ -41,7 +69,7 @@
 </div>
 
 <h2>Temp</h2>
-<%= area_chart @grouped.average(:temp), colors: ["red"], max: 50, min: 0, suffix: "°C" %>
+<%= area_chart @grouped.average(:temp), colors: ["red"], max: 40, min: 0, suffix: "°C" %>
 
 <h2>Light</h2>
 <%= area_chart @grouped.average(:light), colors: ["orange"], max: 1000, min: 0 %>

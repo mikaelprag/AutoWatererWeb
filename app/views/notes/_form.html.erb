@@ -1,0 +1,21 @@
+<div class="notes-form-container">
+  <%= form_for Note.new do |f| %>
+    <fieldset>
+      <legend>New note:</legend>
+      <div class="notes-content">
+        <%= f.text_field :content, placeholder: "Note" %>
+      </div>
+      <div class="notes-happend">
+        <%= f.date_select :happend %>
+      </div>
+      <div class="notes-buttons">
+        <%= link_to "Save", '#', id: 'note-form-submit', class: 'button active' %>
+        <%= link_to "Cancel", '#', id: 'note-form-cancel', class: 'button' %>
+      </div>
+    </fieldset>
+  <% end %>
+
+  <script>
+    initNoteFormButtons();
+  </script>
+</div>

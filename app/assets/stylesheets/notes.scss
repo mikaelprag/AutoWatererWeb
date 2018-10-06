@@ -1,0 +1,50 @@
+.note-links {
+  margin-bottom: 10px;
+}
+
+#note-form {
+  .notes-form-container {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .notes-content {
+    input {
+      min-width: 300px;
+      margin-bottom: 5px;
+    }
+  }
+  .notes-buttons {
+    margin-top: 10px;
+  }
+}
+
+.notes {
+  margin-bottom: 10px;
+  display: none;
+  .note {
+    display: flex;
+    margin-bottom: 5px;
+    .note-container {
+      flex: 1 1;
+      .happend {
+
+      }
+      .content {
+        position: relative;
+        color: black;
+        padding: 5px 10px;
+        background-color: lightgreen;
+        font-size: 1.2em;
+        white-space: nowrap;
+        border-radius: 5px;
+        border-top: 2px solid green;
+        border-bottom: 2px solid green;
+        .delete {
+          position: absolute;
+          right: 10px;
+          top: 5px;
+        }
+      }
+    }
+  }
+}
