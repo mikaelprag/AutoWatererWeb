@@ -59,6 +59,18 @@
   }
 }
 
+.fast-facts.sun .fact p {
+  background-color: orange;
+  border-top: 2px solid brown;
+  border-bottom: 2px solid brown;
+}
+
+.fast-facts.moon .fact p {
+  background-color: #656565;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
 body.mobile {
   .fast-facts .fact {
     p {

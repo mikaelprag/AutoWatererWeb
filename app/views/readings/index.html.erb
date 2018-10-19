@@ -4,7 +4,9 @@
 
 <div class="note-links">
   <%= link_to 'Note +'.html_safe, new_note_path, remote: true, class: 'button active' %>
-  <%= link_to "Show Notes (#{@notes.count})", '#', id: 'notes-link', class: 'button' %>
+  <% if @notes.count > 0 %>
+    <%= link_to "Show Notes (#{@notes.count})", '#', id: 'notes-link', class: 'button' %>
+  <% end %>
 </div>
 
 <div id="note-form">
@@ -37,6 +39,24 @@
   <div class="spacer"></div>
   <div class="fact">
     <p><i class="fas fa-battery-three-quarters"></i> <%= @readings.last.battery %></p>
+  </div>
+</div>
+
+<% is_day = @readings.last.light > Reading::SUN_THRESHOLD %>
+
+<div class="fast-facts <%= is_day ? 'sun' : 'moon' %>">
+  <div class="fact">
+    <p>
+      <i class="fas fa-<%= is_day ? 'sun' : 'moon' %>"></i>
+      <%= ((@readings.last.light / 1023.0) * 100).round %> %</p>
+  </div>
+  <div class="spacer"></div>
+  <div class="fact">
+    <p><i class="fa fa-chevron-up" aria-hidden="true"></i> <%= @sun[:up].created_at.strftime('%H:%M') %></p>
+  </div>
+  <div class="spacer"></div>
+  <div class="fact">
+    <p><i class="fa fa-chevron-down" aria-hidden="true"></i> <%= @sun[:down].created_at.strftime('%H:%M') %></p>
   </div>
 </div>
 
@@ -80,8 +100,10 @@
 <h2>Battery</h2>
 <%= area_chart @grouped.average(:battery), colors: ["green"], max: 600, min: 420 %>
 
-<br/><br/>
-<%= @readings.count %>
+<!--h2>Events</h2-->
+<%# area_chart @chart_notes.group_by_day(:happend, default_value: "missing").count, colors: ["gray"], max: 10, min: 0 %>
+
+<br/>
 <table id="readings">
   <tr>
     <th>Created</th>
