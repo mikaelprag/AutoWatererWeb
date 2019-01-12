@@ -89,7 +89,7 @@
 </div>
 
 <h2>Temp</h2>
-<%= area_chart @grouped.average(:temp), colors: ["red"], max: 40, min: 0, suffix: "°C" %>
+<%= area_chart @grouped.average(:temp), colors: ["red"], max: 40, min: -5, suffix: "°C" %>
 
 <h2>Light</h2>
 <%= area_chart @grouped.average(:light), colors: ["orange"], max: 1000, min: 0 %>
@@ -122,3 +122,7 @@
     </tr>
   <% end %>
 </table>
+
+<div class="debug">
+<p>Served by: <%= @ip %></p>
+</div>

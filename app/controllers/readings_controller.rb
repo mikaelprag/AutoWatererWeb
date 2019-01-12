@@ -11,6 +11,8 @@ class ReadingsController < ApplicationController
 
   def index
 
+    @ip = `hostname -I`.strip
+
     grouping = :hour
     time_span = nil
 
