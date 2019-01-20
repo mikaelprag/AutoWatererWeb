@@ -26,6 +26,9 @@ class ReadingsController < ApplicationController
     elsif params[:span].eql?('6months')
       time_span = 6.month.ago..Time.zone.now
       grouping = :day
+    elsif params[:span].eql?('12months')
+      time_span = 12.month.ago..Time.zone.now
+      grouping = :week
     else
       time_span = 1.week.ago..Time.zone.now
     end
@@ -41,7 +44,9 @@ class ReadingsController < ApplicationController
 
     @chart_notes = Note.where(happend: time_span)
 
-    @grouped = if grouping == :day
+    @grouped = if grouping == :week
+      @readings.group_by_week(:created_at)
+    elsif grouping == :day
       @readings.group_by_day(:created_at)
     elsif grouping == :hour
       @readings.group_by_hour(:created_at)

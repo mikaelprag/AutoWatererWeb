@@ -86,6 +86,11 @@
     <%= submit_tag "6 Months", class: active_class_for('6months') %>
   <% end %>
 
+  <%= form_tag readings_path, method: :get do %>
+    <%= hidden_field_tag :span, '12months' %>
+    <%= submit_tag "12 Months", class: active_class_for('12months') %>
+  <% end %>
+
 </div>
 
 <h2>Temp</h2>
