@@ -63,32 +63,32 @@
 <div class="filter-buttons">
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, 'day' %>
-    <%= submit_tag "Day", class: active_class_for('day') %>
+    <%= submit_tag "1 D", class: active_class_for('day') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, 'week' %>
-    <%= submit_tag "Week", class: active_class_for('week') %>
+    <%= submit_tag "1W", class: active_class_for('week') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, 'month' %>
-    <%= submit_tag "Month", class: active_class_for('month') %>
+    <%= submit_tag "1M", class: active_class_for('month') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, '3months' %>
-    <%= submit_tag "3 Months", class: active_class_for('3months') %>
+    <%= submit_tag "3M", class: active_class_for('3months') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, '6months' %>
-    <%= submit_tag "6 Months", class: active_class_for('6months') %>
+    <%= submit_tag "6M", class: active_class_for('6months') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, '12months' %>
-    <%= submit_tag "12 Months", class: active_class_for('12months') %>
+    <%= submit_tag "12M", class: active_class_for('12months') %>
   <% end %>
 
 </div>
