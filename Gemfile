@@ -21,6 +21,7 @@ gem 'groupdate'
 gem 'serialport'
 
 gem 'browser'
+gem 'thin'
 
 gem 'jquery-rails'
 

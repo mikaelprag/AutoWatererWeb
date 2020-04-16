@@ -29,6 +29,9 @@ class ReadingsController < ApplicationController
     elsif params[:span].eql?('12months')
       time_span = 12.month.ago..Time.zone.now
       grouping = :week
+    elsif params[:span].eql?('3years')
+      time_span = 3.years.ago..Time.zone.now
+      grouping = :week
     else
       time_span = 1.week.ago..Time.zone.now
     end
