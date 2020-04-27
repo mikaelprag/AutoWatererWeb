@@ -27,7 +27,7 @@ class Reading:
         self.battery = battery
 
     def store(self):
-        conn_string = "host='localhost' dbname='' user='' password=''"
+        conn_string = "host='localhost' dbname='autowatererweb_production' user='miccet' password='welcome'"
         conn = psycopg2.connect(conn_string)
         cursor = conn.cursor()
         cursor.execute("""
@@ -52,12 +52,12 @@ class ReadDelegate(btle.DefaultDelegate):
             arr = str.split("|")
             reading = Reading(arr[0],arr[1],arr[2],arr[3])
             reading.store()
+            #p.disconnect()
 
 doRun = True
 hasDevice = False
 buffer = ""
-device = "00:00:00:00:00:00"
-global p
+device = "7C:01:0A:76:D9:6A"
 p = False
 
 while doRun:
@@ -74,6 +74,7 @@ while doRun:
     except Exception as e:
         print("{}: {}".format(datetime.now(), str(e)))
         hasDevice = False
+	p = False
         pass
 
 if not p == False:
