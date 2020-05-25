@@ -38,6 +38,10 @@
   </div>
   <div class="spacer"></div>
   <div class="fact">
+    <p><i class="fas fa-weight"></i> <%= @readings.last.pressure %></p>
+  </div>
+  <div class="spacer"></div>
+  <div class="fact">
     <p><i class="fas fa-battery-three-quarters"></i> <%= @readings.last.battery %></p>
   </div>
 </div>
@@ -106,8 +110,12 @@
 <h2>Humidity</h2>
 <%= area_chart @grouped.average(:humidity), colors: ["blue"], max: 100, min: 0, suffix: "%" %>
 
+<h2>Pressure</h2>
+<%= area_chart @grouped.average(:pressure), colors: ["grey"], max: 1100, min: 980, suffix: "hP" %>
+
 <h2>Battery</h2>
-<%= area_chart @grouped.average(:battery), colors: ["green"], max: 600, min: 420 %>
+<%= area_chart @grouped.average(:battery), colors: ["green"], max: 3800, min: 3500, suffix: "mV" %>
+<%# area_chart @grouped.average(:battery), colors: ["green"], max: 600, min: 420 %>
 
 <!--h2>Events</h2-->
 <%# area_chart @chart_notes.group_by_day(:happend, default_value: "missing").count, colors: ["gray"], max: 10, min: 0 %>
@@ -118,6 +126,7 @@
     <th>Created</th>
     <th>Temp</th>
     <th>Humidity</th>
+    <th>Pressure</th>
     <th>Light</th>
     <th>Battery</th>
   </tr>
@@ -126,8 +135,9 @@
       <td><%= reading.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
       <td><%= reading.temp %> c</td>
       <td><%= reading.humidity %> %</td>
+      <td><%= reading.pressure %> hP</td>
       <td><%= reading.light %></td>
-      <td><%= reading.battery %></td>
+      <td><%= reading.battery %> mV</td>
     </tr>
   <% end %>
 </table>

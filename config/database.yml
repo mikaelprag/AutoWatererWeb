@@ -89,6 +89,6 @@ test:
 #  password: <%= ENV['AUTOWATERERWEB_DATABASE_PASSWORD'] %>
 production:
   <<: *default
-  #database: AutoWatererWeb_development
+  #database: test
   database: autowatererweb_production
   host: 127.0.0.1
