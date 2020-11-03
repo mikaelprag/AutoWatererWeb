@@ -36,11 +36,25 @@ class ReadingsController < ApplicationController
       time_span = 1.week.ago..Time.zone.now
     end
 
-    @station = params[:id] || 1
+    @stations = Station.where(id: params[:id])
+    @stations = Station.all unless @stations.any?
 
-    @all_readings = Reading.where(created_at: time_span)
+    @stations.each do |station|
 
-    @readings = Reading.where(created_at: time_span).where(station: @station)
+      station.data = Reading.where(created_at: time_span, station: station)
+
+      station.data = if grouping == :week
+        station.data.group_by_week(:created_at)
+      elsif grouping == :day
+        station.data.group_by_day(:created_at)
+      elsif grouping == :hour
+        station.data.group_by_hour(:created_at)
+      else
+        raise "No grouping was selected."
+      end
+    end
+
+    @readings = Reading.where(created_at: time_span).where(station: @stations)
     @notes = Note.where(happend: time_span).order(happend: :asc)
 
     # TODO Base this on the current day if sun is up / sun is down already.
@@ -51,15 +65,7 @@ class ReadingsController < ApplicationController
 
     @chart_notes = Note.where(happend: time_span)
 
-    @grouped = if grouping == :week
-      @readings.group_by_week(:created_at)
-    elsif grouping == :day
-      @readings.group_by_day(:created_at)
-    elsif grouping == :hour
-      @readings.group_by_hour(:created_at)
-    else
-      raise "No grouping was selected."
-    end
+    
 
   end
 

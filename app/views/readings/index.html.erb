@@ -29,50 +29,57 @@
 </div>
 
 <div class="fast-facts">
-  <div class="fact <%= 'current' if @station.to_i.eql?(1) %>">
-   <p><%= link_to "Spijkenisse", root_path, style: "color:white;#{'font-weight: bold' if @station.to_i.eql?(1)}" %></p>
+  <div class="fact <%= 'current' if @stations.length.eql?(2) %>">
+   <p><%= link_to "All", root_path, style: "color:white;#{'font-weight: bold' if @stations.length.eql?(2)}" %></p>
   </div>
   <div class="spacer"></div>
-  <div class="fact <%= 'current' if @station.to_i.eql?(2) %>">
-   <p><%= link_to "Degerfors", root_path(id: 2), style: "color:white;#{'font-weight:bold' if @station.to_i.eql?(2)}"  %></p>
+  <div class="fact <%= 'current' if station_is?('Spijkenisse', @stations) %>">
+   <p><%= link_to "Spijkenisse", root_path(id: 1), style: "color:white;#{'font-weight: bold' if station_is?('Spijkenisse', @stations)}" %></p>
+  </div>
+  <div class="spacer"></div>
+  <div class="fact <%= 'current' if station_is?('Degerfors', @stations) %>">
+   <p><%= link_to "Degerfors", root_path(id: 2), style: "color:white;#{'font-weight:bold' if station_is?('Degerfors', @stations)}" %></p>
   </div>
 </div>
 
-<div class="fast-facts">
-  <div class="fact">
-    <p><i class="fas fa-thermometer-empty"></i> <%= @readings.last.temp %> ℃</p>
+<% if @stations.length.eql?(1) %>
+  <div class="fast-facts">
+    <div class="fact">
+      <p><i class="fas fa-thermometer-empty"></i> <%= @readings.last.temp %> ℃</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="fact">
+      <p><i class="fas fa-tint"></i> <%= @readings.last.humidity %> %</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="fact">
+      <p><i class="fas fa-weight"></i> <%= @readings.last.pressure %></p>
+    </div>
+    <div class="spacer"></div>
+    <div class="fact">
+      <p><i class="fas fa-battery-three-quarters"></i> <%= @readings.last.battery %></p>
+    </div>
   </div>
-  <div class="spacer"></div>
-  <div class="fact">
-    <p><i class="fas fa-tint"></i> <%= @readings.last.humidity %> %</p>
-  </div>
-  <div class="spacer"></div>
-  <div class="fact">
-    <p><i class="fas fa-weight"></i> <%= @readings.last.pressure %></p>
-  </div>
-  <div class="spacer"></div>
-  <div class="fact">
-    <p><i class="fas fa-battery-three-quarters"></i> <%= @readings.last.battery %></p>
-  </div>
-</div>
 
-<% is_day = @readings.last.light > Reading::SUN_THRESHOLD %>
+  <% is_day = @readings.last.light > Reading::SUN_THRESHOLD %>
 
-<div class="fast-facts <%= is_day ? 'sun' : 'moon' %>">
-  <div class="fact">
-    <p>
-      <i class="fas fa-<%= is_day ? 'sun' : 'moon' %>"></i>
-      <%= ((@readings.last.light / 1023.0) * 100).round %> %</p>
+  <div class="fast-facts <%= is_day ? 'sun' : 'moon' %>">
+    <div class="fact">
+      <p>
+        <i class="fas fa-<%= is_day ? 'sun' : 'moon' %>"></i>
+        <%= ((@readings.last.light / 1023.0) * 100).round %> %</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="fact">
+      <p><i class="fa fa-chevron-up" aria-hidden="true"></i> <%= @sun[:up].created_at.strftime('%H:%M') if @sun[:up] %></p>
+    </div>
+    <div class="spacer"></div>
+    <div class="fact">
+      <p><i class="fa fa-chevron-down" aria-hidden="true"></i> <%= @sun[:down].created_at.strftime('%H:%M') if @sun[:down] %></p>
+    </div>
   </div>
-  <div class="spacer"></div>
-  <div class="fact">
-    <p><i class="fa fa-chevron-up" aria-hidden="true"></i> <%= @sun[:up].created_at.strftime('%H:%M') if @sun[:up] %></p>
-  </div>
-  <div class="spacer"></div>
-  <div class="fact">
-    <p><i class="fa fa-chevron-down" aria-hidden="true"></i> <%= @sun[:down].created_at.strftime('%H:%M') if @sun[:down] %></p>
-  </div>
-</div>
+
+<% end %>
 
 <div class="filter-buttons">
   <%= form_tag readings_path, method: :get do %>
@@ -119,25 +126,21 @@
 </div>
 
 <h2>Temp</h2>
-<%= area_chart @grouped.average(:temp), colors: ["red"], max: 50, min: -5, suffix: "°C" %>
+<%# area_chart @grouped.average(:temp), colors: ["red"], max: 50, min: -5, suffix: "°C" %>
 
-<%= area_chart [{name: 'Spijkenisse', data: @all_readings.where(station: 1).group_by_hour(:created_at).average(:temp)}, {name: 'Degerfors', data: @all_readings.where(station: 2).group_by_hour(:created_at).average(:temp)}], max: 50, min: -5, suffix: "°C" %>
+<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:temp) } }, max: 50, min: -5, suffix: "°C" %>
 
 <h2>Light</h2>
-<%= area_chart @grouped.average(:light), colors: ["orange"], max: 1000, min: 0 %>
+<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:light) } }, max: 1000, min: 0 %>
 
 <h2>Humidity</h2>
-<%= area_chart @grouped.average(:humidity), colors: ["blue"], max: 100, min: 0, suffix: "%" %>
+<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:humidity) } }, max: 100, min: 0, suffix: "%" %>
 
 <h2>Pressure</h2>
-<%= area_chart @grouped.average(:pressure), colors: ["grey"], max: 1030, min: 975, suffix: "hP" %>
+<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:pressure) } }, max: 1030, min: 975, suffix: "hP" %>
 
 <h2>Battery</h2>
-<%= area_chart @grouped.average(:battery), colors: ["green"], max: 3800, min: 1800, suffix: "mV" %>
-<%# area_chart @grouped.average(:battery), colors: ["green"], max: 600, min: 420 %>
-
-<!--h2>Events</h2-->
-<%# area_chart @chart_notes.group_by_day(:happend, default_value: "missing").count, colors: ["gray"], max: 10, min: 0 %>
+<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:battery) } }, max: 3800, min: 1800, suffix: "mV" %>
 
 <br/>
 <table id="readings">
