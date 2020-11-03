@@ -56,6 +56,14 @@
       border-top: 2px solid blue;
       border-bottom: 2px solid blue;
     }
+
+    @media only screen and (max-width: 800px) {
+        p {
+            font-size: 1em;
+            padding: 5px 10px;
+        }
+    }
+
   }
 }
 
@@ -71,6 +79,7 @@
   border-bottom: 2px solid black;
 }
 
+/*
 body.mobile {
   .fast-facts .fact {
     p {
@@ -79,3 +88,5 @@ body.mobile {
     }
   }
 }
+*/
+

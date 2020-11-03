@@ -29,6 +29,16 @@
 </div>
 
 <div class="fast-facts">
+  <div class="fact <%= 'current' if @station.to_i.eql?(1) %>">
+   <p><%= link_to "Spijkenisse", root_path, style: "color:white;#{'font-weight: bold' if @station.to_i.eql?(1)}" %></p>
+  </div>
+  <div class="spacer"></div>
+  <div class="fact <%= 'current' if @station.to_i.eql?(2) %>">
+   <p><%= link_to "Degerfors", root_path(id: 2), style: "color:white;#{'font-weight:bold' if @station.to_i.eql?(2)}"  %></p>
+  </div>
+</div>
+
+<div class="fast-facts">
   <div class="fact">
     <p><i class="fas fa-thermometer-empty"></i> <%= @readings.last.temp %> ℃</p>
   </div>
@@ -67,35 +77,42 @@
 <div class="filter-buttons">
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, 'day' %>
+    <%= hidden_field_tag :id, @station %>
     <%= submit_tag "1D", class: active_class_for('day') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, 'week' %>
+    <%= hidden_field_tag :id, @station %>
     <%= submit_tag "1W", class: active_class_for('week') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, 'month' %>
+    <%= hidden_field_tag :id, @station %>
     <%= submit_tag "1M", class: active_class_for('month') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, '3months' %>
+    <%= hidden_field_tag :id, @station %>
     <%= submit_tag "3M", class: active_class_for('3months') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, '6months' %>
+    <%= hidden_field_tag :id, @station %>
     <%= submit_tag "6M", class: active_class_for('6months') %>
   <% end %>
 
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, '12months' %>
+    <%= hidden_field_tag :id, @station %>
     <%= submit_tag "12M", class: active_class_for('12months') %>
   <% end %>
   <%= form_tag readings_path, method: :get do %>
     <%= hidden_field_tag :span, '3years' %>
+    <%= hidden_field_tag :id, @station %>
     <%= submit_tag "3Y", class: active_class_for('3years') %>
   <% end %>
 
@@ -104,6 +121,8 @@
 <h2>Temp</h2>
 <%= area_chart @grouped.average(:temp), colors: ["red"], max: 50, min: -5, suffix: "°C" %>
 
+<%= area_chart [{name: 'Spijkenisse', data: @all_readings.where(station: 1).group_by_hour(:created_at).average(:temp)}, {name: 'Degerfors', data: @all_readings.where(station: 2).group_by_hour(:created_at).average(:temp)}], max: 50, min: -5, suffix: "°C" %>
+
 <h2>Light</h2>
 <%= area_chart @grouped.average(:light), colors: ["orange"], max: 1000, min: 0 %>
 
@@ -111,10 +130,10 @@
 <%= area_chart @grouped.average(:humidity), colors: ["blue"], max: 100, min: 0, suffix: "%" %>
 
 <h2>Pressure</h2>
-<%= area_chart @grouped.average(:pressure), colors: ["grey"], max: 1100, min: 980, suffix: "hP" %>
+<%= area_chart @grouped.average(:pressure), colors: ["grey"], max: 1030, min: 975, suffix: "hP" %>
 
 <h2>Battery</h2>
-<%= area_chart @grouped.average(:battery), colors: ["green"], max: 3800, min: 3500, suffix: "mV" %>
+<%= area_chart @grouped.average(:battery), colors: ["green"], max: 3800, min: 1800, suffix: "mV" %>
 <%# area_chart @grouped.average(:battery), colors: ["green"], max: 600, min: 420 %>
 
 <!--h2>Events</h2-->
@@ -129,6 +148,7 @@
     <th>Pressure</th>
     <th>Light</th>
     <th>Battery</th>
+    <th>Station</th>
   </tr>
   <% @readings.order(id: :desc).limit(200).each do |reading| %>
     <tr>
@@ -138,6 +158,7 @@
       <td><%= reading.pressure %> hP</td>
       <td><%= reading.light %></td>
       <td><%= reading.battery %> mV</td>
+      <td><%= reading.station %></td>
     </tr>
   <% end %>
 </table>

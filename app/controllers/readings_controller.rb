@@ -36,12 +36,16 @@ class ReadingsController < ApplicationController
       time_span = 1.week.ago..Time.zone.now
     end
 
-    @readings = Reading.where(created_at: time_span)
+    @station = params[:id] || 1
+
+    @all_readings = Reading.where(created_at: time_span)
+
+    @readings = Reading.where(created_at: time_span).where(station: @station)
     @notes = Note.where(happend: time_span).order(happend: :asc)
 
     # TODO Base this on the current day if sun is up / sun is down already.
     @sun = {}
-    sun_data = Reading.where(created_at: Time.zone.now.yesterday.all_day).where('light > ?', Reading::SUN_THRESHOLD)
+    sun_data = Reading.where(created_at: Time.zone.now.yesterday.all_day).where(station: @station).where('light > ?', Reading::SUN_THRESHOLD)
     @sun[:up] = sun_data.first
     @sun[:down] = sun_data.last
 
