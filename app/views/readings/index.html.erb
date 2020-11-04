@@ -34,11 +34,11 @@
   </div>
   <div class="spacer"></div>
   <div class="fact <%= 'current' if station_is?('Spijkenisse', @stations) %>">
-   <p><%= link_to "Spijkenisse", root_path(id: 1), style: "color:white;#{'font-weight: bold' if station_is?('Spijkenisse', @stations)}" %></p>
+   <p><%= link_to "Spijkenisse", station_path(Station.find(1)), style: "color:white;#{'font-weight: bold' if station_is?('Spijkenisse', @stations)}" %></p>
   </div>
   <div class="spacer"></div>
   <div class="fact <%= 'current' if station_is?('Degerfors', @stations) %>">
-   <p><%= link_to "Degerfors", root_path(id: 2), style: "color:white;#{'font-weight:bold' if station_is?('Degerfors', @stations)}" %></p>
+   <p><%= link_to "Degerfors", station_path(Station.find(2)), style: "color:white;#{'font-weight:bold' if station_is?('Degerfors', @stations)}" %></p>
   </div>
 </div>
 
