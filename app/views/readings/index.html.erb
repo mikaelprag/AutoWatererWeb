@@ -137,7 +137,7 @@
 <%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:humidity) } }, max: 100, min: 0, suffix: "%" %>
 
 <h2>Pressure</h2>
-<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:pressure) } }, max: 1030, min: 975, suffix: "hP" %>
+<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:pressure) } }, max: 1030, min: 960, suffix: "hP" %>
 
 <h2>Battery</h2>
 <%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:battery) } }, max: 3800, min: 1800, suffix: "mV" %>

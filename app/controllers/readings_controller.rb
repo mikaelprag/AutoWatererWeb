@@ -9,6 +9,20 @@ class ReadingsController < ApplicationController
     end
   end
 
+  def latest
+    @station = Station.find(params[:station_id])
+    data = {
+    }
+
+    if @station.present?
+      reading = Reading.where(station: @station).order(id: :desc).first
+      data[:temperature] = reading.temp
+      data[:humidity] = reading.humidity
+    end
+
+    render json: data
+  end
+
   def index
 
     @ip = `hostname -I`.strip
