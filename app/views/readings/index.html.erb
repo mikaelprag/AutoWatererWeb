@@ -128,7 +128,7 @@
 <h2>Temp</h2>
 <%# area_chart @grouped.average(:temp), colors: ["red"], max: 50, min: -5, suffix: "°C" %>
 
-<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:temp) } }, max: 50, min: -5, suffix: "°C" %>
+<%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:temp) } }, max: 50, min: -20, suffix: "°C" %>
 
 <h2>Light</h2>
 <%= area_chart @stations.collect{ |s| { name: s.name, data: s.data.average(:light) } }, max: 1000, min: 0 %>
